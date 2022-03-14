@@ -2,7 +2,7 @@
 include 'profile.php';
 include 'config.php';
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['update'])) {
 	$fname = $_POST['fname'];
 	$lname = $_POST['lname'];
 	$mobile = $_POST['mobile'];
@@ -11,16 +11,13 @@ if (isset($_POST['submit'])) {
 	$cpassword = md5($_POST['cpassword']);
 
 	if ($password == $cpassword) {
-		$sql = "SELECT * FROM users WHERE email='$email'";
-		$result = mysqli_query($conn, $sql);
 		
-		if (!$result->num_rows > 0) {
-			$sql = "INSERT INTO alluser (fname, lname, mobile, email, password)
-					VALUES ('$fname','$lname', '$mobile', '$email', '$password')";
+		$sql = "UPDATE alluser SET fname='$fname', lname='$lname', mobile='$mobile', email='$email', password='$password' WHERE fname='$fname'";
 			$result = mysqli_query($conn, $sql);
+			echo "<script>alert('Wow! User RUPDATE Completed.')</script>";
+
 			if ($result) {
-				echo "<script>alert('Wow! User Registration Completed.')</script>";
-				header ("Location: index.php");
+				header ("Location:profile.php?fname=$redirect");
 				$fname = "";
 				$email = "";
 				$_POST['password'] = "";
@@ -28,14 +25,12 @@ if (isset($_POST['submit'])) {
 			} else {
 				echo "<script>alert('Woops! Something Wrong Went.')</script>";
 			}
-		} else {
-			echo "<script>alert('Woops! Email Already Exists.')</script>";
 		}
-		
-	} else {
-		echo "<script>alert('Password Not Matched.')</script>";
-	}
-}
+		else {
+			echo "<script>alert('Password Not Matched.')</script>";
+		} 
+		}
+
 ?>
 
 
@@ -68,7 +63,8 @@ if (isset($_POST['submit'])) {
         $fname=$_GET['fname'];
         $sql = "SELECT * FROM alluser WHERE fname='$fname'";
         $result = mysqli_query($conn,$sql); 
-        $row = mysqli_fetch_array ($result)
+        $row = mysqli_fetch_array ($result);
+		$redirect=$row['fname'];
 
         ?>
     
@@ -93,7 +89,7 @@ if (isset($_POST['submit'])) {
 				<input type="password" placeholder="Confirm Password" name="cpassword" value="<?php echo $row['password']; ?>" required>
 			</div>
 			<div class="input-group">
-				<button name="submit" class="btn">Update</button>
+				<button name="update" class="btn">Update</button>
 			</div>
 		
 		</form>
