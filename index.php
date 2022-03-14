@@ -8,7 +8,7 @@ session_start();
 error_reporting(0);
 
 if (isset($_SESSION['fname'])) {
-    header('location:profile.php');
+    header("location:profile.php?fname=$redirect");
 }
 
 if (isset($_POST['submit'])) {
@@ -20,7 +20,9 @@ if (isset($_POST['submit'])) {
 	if ($result->num_rows > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$_SESSION['fname'] = $row['fname'];
-		header("Location: profile.php");
+		$redirect=$row['fname'];
+
+      header("location:profile.php?fname=$redirect");
 	} else {
 		echo "<script>alert('Woops! Email or Password is Wrong.')</script>";
 	}
