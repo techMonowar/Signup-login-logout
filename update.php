@@ -3,6 +3,7 @@ include 'profile.php';
 include 'config.php';
 
 if (isset($_POST['update'])) {
+	$id=$_GET['id'];
 	$fname = $_POST['fname'];
 	$lname = $_POST['lname'];
 	$mobile = $_POST['mobile'];
@@ -12,12 +13,12 @@ if (isset($_POST['update'])) {
 
 	if ($password == $cpassword) {
 		
-		$sql = "UPDATE alluser SET fname='$fname', lname='$lname', mobile='$mobile', email='$email', password='$password' WHERE fname='$fname'";
+		$sql = "UPDATE alluser SET fname='$fname', lname='$lname', mobile='$mobile', email='$email', password='$password' WHERE id='$id'";
 			$result = mysqli_query($conn, $sql);
 			echo "<script>alert('Wow! User RUPDATE Completed.')</script>";
 
 			if ($result) {
-				header ("Location:profile.php?fname=$redirect");
+				header ("Location:profile.php?id=$redirect");
 				$fname = "";
 				$email = "";
 				$_POST['password'] = "";
@@ -60,11 +61,11 @@ if (isset($_POST['update'])) {
 
     <?php
 
-        $fname=$_GET['fname'];
-        $sql = "SELECT * FROM alluser WHERE fname='$fname'";
+        $id=$_GET['id'];
+        $sql = "SELECT * FROM alluser WHERE id='$id'";
         $result = mysqli_query($conn,$sql); 
         $row = mysqli_fetch_array ($result);
-		$redirect=$row['fname'];
+		$redirect=$row['id'];
 
         ?>
     

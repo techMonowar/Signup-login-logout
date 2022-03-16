@@ -2,7 +2,7 @@
 include 'config.php';
 session_start();
 
-if (!isset($_SESSION['fname'])) {
+if (!isset($_SESSION['id'])) {
     header("Location: index.php");
 }
 
@@ -20,13 +20,22 @@ if (!isset($_SESSION['fname'])) {
 	<title>Login Form - Pure Coding</title>
 </head>
 <body>
+<?php
+
+$id=$_GET['id'];
+$sql = "SELECT * FROM alluser WHERE id='$id'";
+$result = mysqli_query($conn,$sql); 
+$row = mysqli_fetch_array ($result);
+$redirect=$row['id'];
+
+?>
 <nav class="navbar navbar-expand bg-light navbar-light navbar-fixed-top ">
-  <a class="navbar-brand" href="profile.php?fname=<?php echo $_SESSION['fname'];?>">Monowar</a>
+  <a class="navbar-brand" href="profile.php?id=<?php echo $row['id'];?>">Monowar</a>
   <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-  <li class="nav-item active "><a class="nav-link mx-9" href="profile.php?fname=<?php echo $_SESSION['fname'];?>">Home</a></li>
-      <li class="nav-item"><a class="nav-link" href="profile.php?fname=<?php echo $_SESSION['fname'];?>"><?php echo " Welcome " . $_SESSION['fname'] ?></a></li>
-      <button type="button" class="btn btn-primary mx-2"><a href='update.php?fname=<?php echo $_SESSION['fname'];?>' class="text-white"> Update</a></button>
-      <button type="button" class="btn btn-warning mx-2"><a href='profile.php?fname=<?php echo $_SESSION['fname'];?>'class="text-white"> Profile</a></button>
+  <li class="nav-item active "><a class="nav-link mx-9" href="profile.php?id=<?php echo $_SESSION['id'];?>">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="profile.php?id=<?php echo $_SESSION['id'];?>"><?php echo " Welcome " . $row['fname'] ?></a></li>
+      <button type="button" class="btn btn-primary mx-2"><a href='update.php?id=<?php echo $_SESSION['id'];?>' class="text-white"> Update</a></button>
+      <button type="button" class="btn btn-warning mx-2"><a href='profile.php?id=<?php echo $_SESSION['id'];?>'class="text-white"> Profile</a></button>
       <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#staticBackdrop">Logout</button>
       
  </ul>
@@ -54,18 +63,11 @@ if (!isset($_SESSION['fname'])) {
   </div>
 </div>
 
-<?php
 
-        $fname=$_GET['fname'];
-        $sql = "SELECT * FROM alluser WHERE fname='$fname'";
-        $result = mysqli_query($conn,$sql); 
-        $row = mysqli_fetch_array ($result)
-
-        ?>
      
 
 
-    <div class="text-center mt-4" ><?php echo "<h1>Welcome " . $_SESSION['fname'] ." ".$row['lname']."</h1>"; ?></div>
+    <div class="text-center mt-4" ><?php echo "<h1>Welcome " . $row['fname'] ." ".$row['lname']."</h1>"; ?></div>
     <div class="text-center mt-4" >
     <p>Below is Your Details You Can Upadate this Details By Clickin Above Button on Navigation Bar</p>
 
