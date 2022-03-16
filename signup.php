@@ -22,8 +22,11 @@ if (isset($_POST['submit'])) {
 
 	if ($password == $cpassword) {
 		$sql = "SELECT * FROM alluser WHERE email='$email'";
-		$result = mysqli_query($conn, $sql);
 		
+		$result = mysqli_query($conn, $sql);
+		if($result){
+			$q = "SELECT * FROM alluser WHERE mobile='$mobile'";
+			$result = mysqli_query($conn,$q);
 		if (!$result->num_rows > 0) {
 			$sql = "INSERT INTO alluser (fname, lname, mobile, email, password)
 					VALUES ('$fname','$lname', '$mobile', '$email', '$password')";
@@ -38,9 +41,10 @@ if (isset($_POST['submit'])) {
 			} else {
 				echo "<script>alert('Woops! Something Wrong Went.')</script>";
 			}
-		} else {
-			echo "<script>alert('Woops! Email Already Exists.')</script>";
+		}else {
+			echo "<script>alert('Woops! Email or Mobile Already Exists.')</script>";
 		}
+	 }
 		
 	} else {
 		echo "<script>alert('Password Not Matched.')</script>";
